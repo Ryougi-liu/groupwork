@@ -68,7 +68,7 @@ export function checkSharedExperience() {
 }
 
 export function checkFullVersion() {
-  const html = read('城与友-完整版.html');
+  const html = read('index.html');
   for (const phrase of [
     '间谍', '守夜人', '城邦万民',
     '第一幕 · 旧曲', '第二幕 · 裂痕', '第三幕 · 城与友', '第四幕 · 刃落', '第五幕 · 余烬',
@@ -85,8 +85,7 @@ export function checkLocalAssets(relativePath) {
   const html = read(relativePath);
   assert.doesNotMatch(html, /(?:https?:)?\/\//i, `${relativePath} 含远程资源`);
   const localRefs = [...html.matchAll(/(?:src|href)=["']([^"'#]+)["']/gi)]
-    .map((match) => match[1])
-    .filter((ref) => !ref.endsWith('.html'));
+    .map((match) => match[1]);
   for (const ref of localRefs) {
     assert.ok(statSync(path.join(projectDir, ref)).isFile(), `${relativePath} 引用的资源不存在：${ref}`);
   }
@@ -106,17 +105,17 @@ export function checkConciseVersion() {
   }
   const cjkCount = [...html.matchAll(/[\u3400-\u9fff]/g)].length;
   assert.ok(cjkCount >= 900 && cjkCount <= 1_700, `精简版中文字符数应为 900–1700，实际 ${cjkCount}`);
-  assert.match(html, /href=["']城与友-完整版\.html["']/i, '精简版缺少完整版入口');
+  assert.match(html, /href=["']index\.html["']/i, '精简版缺少完整版入口');
 
   checkLocalAssets('城与友-精简版.html');
-  checkLocalAssets('城与友-完整版.html');
+  checkLocalAssets('index.html');
   for (const asset of ['assets/css/story.css', 'assets/js/story.js']) {
     assert.doesNotMatch(read(asset), /(?:https?:)?\/\//i, `${asset} 含远程资源`);
   }
 }
 
 const pages = [
-  ['城与友-完整版.html', 'full'],
+  ['index.html', 'full'],
   ['城与友-精简版.html', 'concise'],
 ];
 
@@ -141,3 +140,4 @@ console.log('PASS 完整版内容');
 
 checkConciseVersion();
 console.log('PASS 精简版内容与离线资源');
+
