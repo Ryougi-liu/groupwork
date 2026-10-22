@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const siteRoot = path.resolve(here, '..');
-const sourcePath = path.join(siteRoot, '城与友-完整版.html');
+const sourcePath = path.join(siteRoot, 'index.html');
 const cssPath = path.join(siteRoot, 'assets', 'css', 'story.css');
 const jsPath = path.join(siteRoot, 'assets', 'js', 'story.js');
 
@@ -68,3 +68,4 @@ for (const [outputPath, imageSet] of outputs) {
   fs.writeFileSync(outputPath, buildDocument(imageSet), 'utf8');
   console.log(`WROTE ${outputPath}`);
 }
+
